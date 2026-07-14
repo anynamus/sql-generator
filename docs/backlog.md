@@ -14,7 +14,7 @@ US-001
 
 [x] YamlNode
 
-[ ] SnakeYamlReader
+[x] SnakeYamlReader
 
 [ ] TableDecoder
 
@@ -23,3 +23,7 @@ US-001
 [ ] Parser des contraintes
 
 [ ] Refactoring
+
+## Refactoring candidate
+
+Déplacer traverse vers core lorsqu'un second usage apparaîtra.
