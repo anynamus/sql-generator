@@ -24,8 +24,8 @@ class SnakeYamlReaderSpec extends AnyFunSuite:
     node match
       case Right(YamlNode.Mapping(fields)) =>
         assert(fields.size == 2)
-        assert(fields.contains("table"))
-        assert(fields.contains("columns"))
+        assert(fields.head._1 == "table")
+        assert(fields.tail.head._1 == "columns")
 
       case Right(_) =>
         fail("expected a mapping")

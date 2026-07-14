@@ -8,7 +8,7 @@ import sqlgenerator.core.Result
 import scala.jdk.CollectionConverters.*
 import scala.jdk.OptionConverters.*
 
-class SnakeYamlReader extends YamlReader {
+class SnakeYamlReader extends YamlReader:
 
   private val compose =
     Compose(
@@ -64,10 +64,12 @@ class SnakeYamlReader extends YamlReader {
   private def traverse[A, B](
                               list: List[A]
                             )(f: A => Result[B]): Result[List[B]] =
-    list.foldLeft[Result[List[B]]](Right(List()))((acc, item) =>
-      for
-        prevResults <- acc
-        nextResult <- f(item)
-      yield prevResults :+ nextResult
-    )
-}
+
+    list
+      .foldLeft[Result[List[B]]](Right(Nil)) { (acc, item) =>
+        for
+          results <- acc
+          value <- f(item)
+        yield value :: results
+      }
+      .map(_.reverse)
