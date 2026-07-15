@@ -13,8 +13,12 @@ class TableDecoderSpec extends AnyFunSuite:
 
     val result = decoder.decode(node)
 
-    assert(result.isLeft)
-    assert(result.left.getOrElse(null) == "Expected a mapping for table definition")
+    result match
+      case Left(error) =>
+        assert(error == "Expected a mapping for table definition")
+
+      case Right(_) =>
+        fail("expected failure")
 
 
   test("reads a table without table definition"):
@@ -22,8 +26,12 @@ class TableDecoderSpec extends AnyFunSuite:
 
     val result = decoder.decode(node)
 
-    assert(result.isLeft)
-    assert(result.left.getOrElse(null) == "Missing 'table' field")
+    result match
+      case Left(error) =>
+        assert(error == "Missing 'table' field")
+
+      case Right(_) =>
+        fail("expected failure")
 
 
   test("A table name must be of type Scalar"):
@@ -31,8 +39,12 @@ class TableDecoderSpec extends AnyFunSuite:
 
     val result = decoder.decode(node)
 
-    assert(result.isLeft)
-    assert(result.left.getOrElse(null) == "Table name must be of type Scalar")
+    result match
+      case Left(error) =>
+        assert(error == "Table name must be of type Scalar")
+
+      case Right(_) =>
+        fail("expected failure")
 
 
   test("Reads a table (without columns)"):
@@ -40,5 +52,8 @@ class TableDecoderSpec extends AnyFunSuite:
 
     val result = decoder.decode(node)
 
-    assert(result.isRight)
-    assert(result.getOrElse(null) == Table("Customer", Vector.empty))
+    result match
+      case Right(table) =>
+        assert(table == Table("Customer", Vector.empty))
+      case _ =>
+        fail("expected table named Customer")
