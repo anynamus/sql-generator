@@ -4,9 +4,7 @@
 
 - [x] Bootstrap project
 
-## Sprint 1
-
-US-001
+## US-001
 
 [x] Initialisation
 
@@ -15,6 +13,8 @@ US-001
 [x] YamlNode
 
 [x] SnakeYamlReader
+
+## US-002
 
 [ ] TableDecoder
 
