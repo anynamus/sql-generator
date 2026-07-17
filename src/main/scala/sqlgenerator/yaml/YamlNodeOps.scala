@@ -12,3 +12,8 @@ object YamlNodeOps:
         case YamlNode.Sequence(_) => Left("Cannot map a Sequence node to Scalar")
         case YamlNode.Mapping(_) => Left("Cannot map a Mapping node to Scalar")
 
+    def asSequence: Result[Vector[YamlNode]] =
+      node match
+        case YamlNode.Sequence(values) => Right(values)
+        case YamlNode.Scalar(_) => Left("Cannot map a Scalar node to Sequence")
+        case YamlNode.Mapping(_) => Left("Cannot map a Mapping node to Sequence")
