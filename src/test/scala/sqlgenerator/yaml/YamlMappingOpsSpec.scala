@@ -3,7 +3,7 @@ package sqlgenerator.yaml
 import sqlgenerator.yaml.YamlMappingOps.*
 import org.scalatest.funsuite.AnyFunSuite
 
-class YamlMappingOpsTest extends AnyFunSuite:
+class YamlMappingOpsSpec extends AnyFunSuite:
 
   test("calling required without value"):
     Map.empty[String, YamlNode].required("table") match
