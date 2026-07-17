@@ -1,8 +1,6 @@
 package sqlgenerator.yaml
 
-import sqlgenerator.yaml.YamlNode.Scalar
-import sqlgenerator.yaml.YamlNodeOps.asScalar
-import sqlgenerator.yaml.YamlNodeOps.asSequence
+import sqlgenerator.yaml.YamlNodeOps.*
 import org.scalatest.funsuite.AnyFunSuite
 
 class YamlNodeOpsSpec extends AnyFunSuite:
@@ -33,8 +31,8 @@ class YamlNodeOpsSpec extends AnyFunSuite:
       case Right(_) => fail("error expected")
 
   test("using asSequence on a Sequence node"):
-    YamlNode.Sequence(Vector(Scalar("first value"))).asSequence match
+    YamlNode.Sequence(Vector(YamlNode.Scalar("first value"))).asSequence match
       case Right(value) =>
         assert(value.size == 1)
-        assert(value.head == Scalar("first value"))
+        assert(value.head == YamlNode.Scalar("first value"))
       case Left(_) => fail("unexpected error")
