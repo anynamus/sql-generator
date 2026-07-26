@@ -28,7 +28,7 @@ class TableDecoderSpec extends AnyFunSuite:
 
     result match
       case Left(error) =>
-        assert(error == "Missing 'table' field")
+        assert(error == "Missing field 'table'")
 
       case Right(_) =>
         fail("expected failure")

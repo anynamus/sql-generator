@@ -26,4 +26,6 @@
 
 ## Refactoring candidate
 
-Déplacer traverse vers core lorsqu'un second usage apparaîtra.
+[ ] Déplacer traverse vers core lorsqu'un second usage apparaîtra.
+
+[ ] Ajouter asMapping()

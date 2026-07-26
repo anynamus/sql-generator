@@ -1,6 +1,9 @@
 package sqlgenerator.domain
 
-enum ColumnType:
+enum ColumnType(val yamlName: String):
+  case AutoNumber extends ColumnType("autonumber")
+  case String extends ColumnType("string")
 
-  case AutoNumber
-  case String
+object ColumnType:
+  def fromString(name: String):Option[ColumnType] =
+    ColumnType.values.find(_.yamlName == name)

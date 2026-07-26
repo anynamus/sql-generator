@@ -19,7 +19,7 @@ class TableDecoder
     optionNode match
       case Some(YamlNode.Scalar(tableName)) => Right(tableName)
       case Some(_) => Left("Table name must be of type Scalar")
-      case None => Left("Missing 'table' field")
+      case None => Left("Missing field 'table'")
 
   private def decodeColumns(optionNode:Option[YamlNode]): Result[Vector[Column]] =
     Right(Vector())
