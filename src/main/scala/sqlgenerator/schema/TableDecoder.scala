@@ -1,25 +1,24 @@
 package sqlgenerator.schema
 
 import sqlgenerator.core.Result
-import sqlgenerator.domain.{Column, Table}
+import sqlgenerator.core.Traverse.traverse
+import sqlgenerator.domain.Table
+import sqlgenerator.yaml.YamlMappingOps.*
 import sqlgenerator.yaml.YamlNode
+import sqlgenerator.yaml.YamlNodeOps.*
 
-class TableDecoder
-  extends Decoder[Table] :
+class TableDecoder(columnDecoder: ColumnDecoder) extends Decoder[Table] :
+
   override def decode(node: YamlNode): Result[Table] =
     node match
       case YamlNode.Mapping(fields) =>
         for
-          tableName <- decodeTableName(fields.get("table"))
-          columns <- decodeColumns(fields.get("columns"))
+          tableName <-
+            fields.required("table")
+              .flatMap(_.asScalar)
+          columns <-
+            fields.required("columns")
+              .flatMap(_.asSequence)
+              .flatMap(nodes => traverse(nodes)(columnDecoder.decode))
         yield Table(tableName, columns)
       case _ => Left("Expected a mapping for table definition")
-
-  private def decodeTableName(optionNode: Option[YamlNode]): Result[String] =
-    optionNode match
-      case Some(YamlNode.Scalar(tableName)) => Right(tableName)
-      case Some(_) => Left("Table name must be of type Scalar")
-      case None => Left("Missing field 'table'")
-
-  private def decodeColumns(optionNode:Option[YamlNode]): Result[Vector[Column]] =
-    Right(Vector())

@@ -55,3 +55,17 @@ class SnakeYamlReaderSpec extends AnyFunSuite:
     node.getOrElse(null) match
       case YamlNode.Scalar(value) => assert(value == "a, b, c")
       case _ => fail("unexpected node")
+
+  test("mapping with non-scalar key returns error"):
+    val yaml =
+      """
+        |[a, b]: value
+        |""".stripMargin
+
+    val node = reader.read(yaml)
+
+    node match
+      case Left(error) =>
+        assert(error == "invalid YAML key: keys must be scalars")
+      case Right(_) =>
+        fail("expected failure")
