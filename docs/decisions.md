@@ -1,39 +1,25 @@
-# ADR-0001
+# Design Decisions
 
-## Incremental Development
+## DD-001 — ValidationResult
 
-The project is developed incrementally.
+### Decision
 
-Every Git commit must:
+The first version of `ValidationResult` is defined as:
 
-- compile
-- pass all tests
-- be potentially releasable
+```scala
+type ValidationResult[+A] = Either[Vector[String], A]
+```
 
-# ADR-0002
+### Context
 
-## Contexte
+The initial business validation rules require only plain-text error messages.
 
-SnakeYAML expose déjà son propre arbre.
+### Alternatives Considered
 
-## Décision
+```scala
+type ValidationResult[+A] = Either[Vector[ValidationError], A]
+```
 
-Créer notre propre représentation `YamlNode`.
+### Rationale
 
-## Conséquences
-
-Le domaine ne dépend plus de SnakeYAML.
-
-# ADR-0003
-
-## Contexte
-
-Le modèle `YamlNode` pourrait être généralisé afin de représenter un document hiérarchique indépendamment de son format d'origine.
-
-## Décision
-
-Conserver le nom `YamlNode` tant que YAML reste l'unique source prise en charge.
-
-## Conséquences
-
-Si une seconde source (JSON, XML...) apparaît, réévaluer cette décision et envisager l'introduction d'un type `Node` ou `DocumentNode`.
+If future requirements evolve (rule identifiers, source location, severity levels, etc.), the error type can be replaced with a richer `ValidationError` model without changing the `Validator` contract.
