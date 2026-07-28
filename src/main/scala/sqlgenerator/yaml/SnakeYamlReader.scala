@@ -4,6 +4,7 @@ import org.snakeyaml.engine.v2.api.LoadSettings
 import org.snakeyaml.engine.v2.api.lowlevel.Compose
 import org.snakeyaml.engine.v2.nodes.*
 import sqlgenerator.core.Result
+import sqlgenerator.core.Traverse.traverse
 
 import scala.jdk.CollectionConverters.*
 import scala.jdk.OptionConverters.*
@@ -39,17 +40,17 @@ class SnakeYamlReader extends YamlReader:
         Right(YamlNode.Scalar(scalar.getValue))
 
   private def convertMapping(mapping: MappingNode): Result[YamlNode] =
-    val entries = mapping.getValue.asScala.toList
+    val entries = mapping.getValue.asScala.toVector
 
     traverse(entries)(convertMappingEntry).map(fields =>
       YamlNode.Mapping(fields.toMap)
     )
 
   private def convertSequence(sequence: SequenceNode): Result[YamlNode] =
-    val values = sequence.getValue.asScala.toList
+    val values = sequence.getValue.asScala.toVector
 
     traverse(values)(convert).map(nodes =>
-      YamlNode.Sequence(nodes.toVector)
+      YamlNode.Sequence(nodes)
     )
 
   private def convertMappingEntry(tuple: NodeTuple): Result[(String, YamlNode)] =
@@ -60,16 +61,3 @@ class SnakeYamlReader extends YamlReader:
 
       value <- convert(tuple.getValueNode)
     yield (key, value)
-
-  private def traverse[A, B](
-                              list: List[A]
-                            )(f: A => Result[B]): Result[List[B]] =
-
-    list
-      .foldLeft[Result[List[B]]](Right(Nil)) { (acc, item) =>
-        for
-          results <- acc
-          value <- f(item)
-        yield value :: results
-      }
-      .map(_.reverse)

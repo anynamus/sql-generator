@@ -4,9 +4,7 @@
 
 - [x] Bootstrap project
 
-## Sprint 1
-
-US-001
+## US-001
 
 [x] Initialisation
 
@@ -16,7 +14,9 @@ US-001
 
 [x] SnakeYamlReader
 
-[ ] TableDecoder
+## US-002
+
+[x] TableDecoder
 
 [ ] Parser des types
 
@@ -26,4 +26,6 @@ US-001
 
 ## Refactoring candidate
 
-Déplacer traverse vers core lorsqu'un second usage apparaîtra.
+[x] Déplacer traverse vers core lorsqu'un second usage apparaîtra.
+
+[ ] Ajouter asMapping()
