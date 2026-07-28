@@ -16,7 +16,7 @@
 
 ## US-002
 
-[ ] TableDecoder
+[x] TableDecoder
 
 [ ] Parser des types
 
@@ -26,6 +26,6 @@
 
 ## Refactoring candidate
 
-[ ] Déplacer traverse vers core lorsqu'un second usage apparaîtra.
+[x] Déplacer traverse vers core lorsqu'un second usage apparaîtra.
 
 [ ] Ajouter asMapping()

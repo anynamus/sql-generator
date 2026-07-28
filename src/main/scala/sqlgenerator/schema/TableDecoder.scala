@@ -2,12 +2,12 @@ package sqlgenerator.schema
 
 import sqlgenerator.core.Result
 import sqlgenerator.core.Traverse.traverse
-import sqlgenerator.domain.Table
+import sqlgenerator.domain.{Column, Table}
 import sqlgenerator.yaml.YamlMappingOps.*
 import sqlgenerator.yaml.YamlNode
 import sqlgenerator.yaml.YamlNodeOps.*
 
-class TableDecoder(columnDecoder: ColumnDecoder) extends Decoder[Table] :
+class TableDecoder(columnDecoder: Decoder[Column]) extends Decoder[Table] :
 
   override def decode(node: YamlNode): Result[Table] =
     node match
