@@ -18,9 +18,17 @@
 
 [x] TableDecoder
 
-[ ] Parser des types
+## US-003
 
-[ ] Parser des contraintes
+[x] Table validation
+
+## US-004
+
+[ ] Define and validate Reference constraint
+
+## US-005
+
+[ ] Validate a schema
 
 [ ] Refactoring
 

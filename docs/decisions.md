@@ -1,39 +1,66 @@
-# ADR-0001
+# Design Decisions
 
-## Incremental Development
+## DD-001 — ValidationResult
 
-The project is developed incrementally.
+### Decision
 
-Every Git commit must:
+The first version of `ValidationResult` is defined as:
 
-- compile
-- pass all tests
-- be potentially releasable
+```scala
+type ValidationResult[+A] = Either[Vector[String], A]
+```
 
-# ADR-0002
+### Context
 
-## Contexte
+The initial business validation rules require only plain-text error messages.
 
-SnakeYAML expose déjà son propre arbre.
+### Alternatives Considered
 
-## Décision
+```scala
+type ValidationResult[+A] = Either[Vector[ValidationError], A]
+```
 
-Créer notre propre représentation `YamlNode`.
+### Rationale
 
-## Conséquences
+At this stage, business rules only need to identify which rules were violated.
+Introducing a dedicated `ValidationError` model would add complexity without providing immediate value.
+The design intentionally leaves room for future evolution. If business rules later require richer information (rule identifier, message, source location, severity, affected column, etc.), `String` can be replaced by `ValidationError` without changing the `Validator` contract.
 
-Le domaine ne dépend plus de SnakeYAML.
+## DD-002 — Validation Rules
 
-# ADR-0003
+### Decision
 
-## Contexte
+Each business rule is implemented as an independent validation rule.
 
-Le modèle `YamlNode` pourrait être généralisé afin de représenter un document hiérarchique indépendamment de son format d'origine.
+### Rationale
 
-## Décision
+This design follows the Single Responsibility Principle and allows rules to be added or removed independently.
 
-Conserver le nom `YamlNode` tant que YAML reste l'unique source prise en charge.
+The current contract returns `Option[String]`, as each business rule reports at most one violation.
 
-## Conséquences
+If a future rule needs to report multiple violations, the contract may evolve to return `Vector[String]` or a richer validation model.
 
-Si une seconde source (JSON, XML...) apparaît, réévaluer cette décision et envisager l'introduction d'un type `Node` ou `DocumentNode`.
+## DD-003 - ValidationError Representation
+
+### Decision
+
+Validation errors are represented by the `ValidationError` type alias.
+This decision supersedes the original representation introduced in DD-001.
+
+```scala
+type ValidationError = String
+```
+
+### Rationale
+
+This model is still simple while allowing it to evolve with minimal impact on the current API.
+
+In future developments, this type could be replaced by an enum, a trait or any other necessary implementation.
+
+### Consequence
+
+The ValidationResult is now defined like this:
+
+```scala
+type ValidationResult[+A] = Either[Vector[ValidationError], A]
+```
