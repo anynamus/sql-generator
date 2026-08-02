@@ -1,13 +1,13 @@
 package alchemy.domain.sql.decoder
 
-import alchemy.core.Result
+import alchemy.core.{Decoder, Result}
 import alchemy.core.Traverse.traverse
 import alchemy.domain.sql.model.{Column, Table}
 import alchemy.yaml.YamlMappingOps.*
 import alchemy.yaml.YamlNode
 import alchemy.yaml.YamlNodeOps.*
 
-class TableDecoder(columnDecoder: Decoder[Column]) extends Decoder[Table] :
+class TableDecoder(columnDecoder: Decoder[YamlNode, Column]) extends Decoder[YamlNode,Table] :
 
   override def decode(node: YamlNode): Result[Table] =
     node match

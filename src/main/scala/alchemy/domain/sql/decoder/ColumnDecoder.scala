@@ -1,13 +1,12 @@
 package alchemy.domain.sql.decoder
 
-import alchemy.core.Result
-import alchemy.domain.sql.decoder.Decoder
+import alchemy.core.{Decoder, Result}
 import alchemy.domain.sql.model.{Column, ColumnType}
 import alchemy.yaml.YamlMappingOps.*
 import alchemy.yaml.YamlNode
 import alchemy.yaml.YamlNodeOps.*
 
-class ColumnDecoder extends Decoder[Column]:
+class ColumnDecoder extends Decoder[YamlNode,Column]:
   override def decode(node: YamlNode): Result[Column] =
     node match
       case YamlNode.Mapping(fields) =>
