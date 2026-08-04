@@ -1,13 +1,14 @@
 package alchemy.domain.sql.decoder
 
 import alchemy.domain.sql.decoder.ColumnDecoder
-import alchemy.domain.sql.model.ColumnType
+import alchemy.domain.sql.model.{ColumnType, Constraint}
+import alchemy.domain.sql.model.Constraint.*
 import alchemy.yaml.YamlNode
 import org.scalatest.funsuite.AnyFunSuite
 
 class ColumnDecoderSpec extends AnyFunSuite:
 
-  private val decoder = new ColumnDecoder()
+  private val decoder = new ColumnDecoder(new ConstraintDecoder())
 
   test("A column node must be of type Mapping"):
     val node = YamlNode.Scalar("id")
@@ -75,7 +76,7 @@ class ColumnDecoderSpec extends AnyFunSuite:
       case Right(_) =>
         fail("error expected")
 
-  test("reads a valid column definition"):
+  test("reads a valid column definition without constraint"):
     val node = YamlNode.Mapping(Map("name" -> YamlNode.Scalar("id"), "type" -> YamlNode.Scalar("autonumber")))
 
     val result = decoder.decode(node)
@@ -84,5 +85,44 @@ class ColumnDecoderSpec extends AnyFunSuite:
       case Right(column) =>
         assert("id" == column.name)
         assert(ColumnType.AutoNumber == column.`type`)
+        assert(column.constraints == Vector.empty)
       case Left(_) =>
         fail("expected column named 'id' with type 'AutoNumber'")
+
+  test("reads a valid column definition with not null constraint"):
+    val node = YamlNode.Mapping(Map(
+      "name" -> YamlNode.Scalar("id"),
+      "type" -> YamlNode.Scalar("autonumber"),
+      "constraints" -> YamlNode.Sequence(Vector(YamlNode.Scalar("not null")))
+    ))
+
+    val result = decoder.decode(node)
+
+    result match
+      case Right(column) =>
+        assert(column.constraints.size == 1)
+        assert(column.constraints.head == NotNull)
+      case Left(_) =>
+        fail("expected column to have a 'not null' constraint")
+
+  test("reads a valid column definition with not null and reference constraint"):
+    val node = YamlNode.Mapping(Map(
+      "name" -> YamlNode.Scalar("id"),
+      "type" -> YamlNode.Scalar("autonumber"),
+      "constraints" -> YamlNode.Sequence(
+        Vector(
+          YamlNode.Scalar("not null"),
+          YamlNode.Mapping(Map("reference" -> YamlNode.Scalar("Order")))
+        )
+      )
+    ))
+
+    val result = decoder.decode(node)
+
+    result match
+      case Right(column) =>
+        assert(column.constraints.size == 2)
+        assert(column.constraints == Vector(NotNull, Reference("Order")))
+      case Left(_) =>
+        fail("expected column to have a 'reference' constraint")
+

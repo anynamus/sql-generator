@@ -16,6 +16,9 @@ class SnakeYamlReaderSpec extends AnyFunSuite:
         |columns:
         |  - name: id
         |    type: autonumber
+        |    constraints:
+        |      - not null
+        |      - reference: Order
         |""".stripMargin
 
 

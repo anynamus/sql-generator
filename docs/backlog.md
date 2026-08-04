@@ -22,11 +22,15 @@
 
 [x] Table validation
 
-## US-004
+## US-004 Structural Refactoring
 
-[ ] Define and validate Reference constraint
+[x] Clarifying packages' role and dependencies
 
 ## US-005
+
+[x] Define and validate Reference constraint
+
+## US-006
 
 [ ] Validate a schema
 
