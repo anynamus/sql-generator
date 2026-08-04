@@ -15,7 +15,7 @@ class ConstraintDecoder extends Decoder[YamlNode,Constraint]:
       case YamlNode.Mapping(fields) =>
         val allowed = Set("reference")
         val unknown = fields.keySet -- allowed
-        if(unknown.nonEmpty) then {
+        if unknown.nonEmpty then {
           Left(s"Unknown constraint field(s): '${unknown.mkString(",")}'")
         } else
           fields.get("reference") match
