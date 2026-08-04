@@ -28,7 +28,7 @@
 
 ## US-005
 
-[ ] Define and validate Reference constraint
+[x] Define and validate Reference constraint
 
 ## US-006
 

@@ -1,5 +1,4 @@
 package alchemy.domain.sql.model
-import alchemy.domain.sql.model.ColumnType
 
 enum ColumnType(val yamlName: String):
   case AutoNumber extends ColumnType("autonumber")

@@ -7,7 +7,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class TableDecoderSpec extends AnyFunSuite:
 
-  private val decoder = new TableDecoder(new ColumnDecoder())
+  private val decoder = new TableDecoder(new ColumnDecoder(new ConstraintDecoder()))
 
   test("A table node must be of type Mapping"):
     val node = YamlNode.Scalar("Customer")
