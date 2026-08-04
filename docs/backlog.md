@@ -30,11 +30,45 @@
 
 [x] Define and validate Reference constraint
 
-## US-006
+### US-006 Constraint validation
 
-[ ] Validate a schema
+[ ] Applying business rules validations on the constraints
 
-[ ] Refactoring
+## US-007 Schema model
+
+[ ] Introduce Schema
+
+## US-008 Schema decoder
+
+[ ] Decode a Schema
+
+## US-009 Schema validation
+
+[ ] Validate a Schema
+
+## US-010 Import data
+
+[ ] Read CSV files
+[ ] Build raw records
+
+## US-011 Data enrichment
+
+[ ] Generate AutoNumber values
+[ ] Resolve references
+
+## US-012 Execution planning
+
+[ ] Build dependency graph
+[ ] Detect dependency cycles
+[ ] Order inserts
+
+## US-013 SQL generation
+
+[ ] Generate INSERT statements
+
+## US-014 SQL dialects
+
+[ ] Introduce SQL dialect abstraction
 
 ## Refactoring candidate
 
